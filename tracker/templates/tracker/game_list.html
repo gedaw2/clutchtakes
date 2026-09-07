@@ -1,0 +1,19 @@
+{% extends "tracker/base.html" %}
+{% block title %}Games - clutchtakes{% endblock %}
+{% block content %}
+<h1>Games logged</h1>
+{% if games %}
+{% for g in games %}
+<div style="margin-bottom: 20px;">
+    <strong>{{ g }}</strong> <span style="color:#666;">({{ g.get_sport_display }})</span>
+    <ul>
+        {% for p in g.performances.all %}
+        <li>{{ p.athlete }} — {{ p.stat_line }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% else %}
+<p class="empty">No games logged yet. Add some in the <a href="/admin/">admin</a>.</p>
+{% endif %}
+{% endblock %}

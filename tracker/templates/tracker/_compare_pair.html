@@ -1,0 +1,29 @@
+<div id="compare-container">
+{% if pair %}
+<p>Which performance was better?</p>
+<div class="pair">
+    <button class="card"
+            hx-post="{% url 'compare_pick' %}"
+            hx-target="#compare-container"
+            hx-swap="outerHTML"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-vals='{"winner_id": "{{ left.id }}", "loser_id": "{{ right.id }}"}'>
+        <h3>{{ left.athlete }}</h3>
+        <div class="meta">{{ left.game }}</div>
+        {{ left.stat_line }}
+    </button>
+    <button class="card"
+            hx-post="{% url 'compare_pick' %}"
+            hx-target="#compare-container"
+            hx-swap="outerHTML"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-vals='{"winner_id": "{{ right.id }}", "loser_id": "{{ left.id }}"}'>
+        <h3>{{ right.athlete }}</h3>
+        <div class="meta">{{ right.game }}</div>
+        {{ right.stat_line }}
+    </button>
+</div>
+{% else %}
+<p class="empty">Need at least 2 performances logged to compare. Add some in the <a href="/admin/">admin</a>.</p>
+{% endif %}
+</div>

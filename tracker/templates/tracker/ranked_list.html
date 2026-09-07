@@ -1,0 +1,21 @@
+{% extends "tracker/base.html" %}
+{% block title %}Rankings - clutchtakes{% endblock %}
+{% block content %}
+<h1>Performance rankings</h1>
+{% if performances %}
+<table>
+    <tr><th>#</th><th>Athlete</th><th>Game</th><th>Stat line</th><th>Rating</th></tr>
+    {% for p in performances %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ p.athlete }}</td>
+        <td>{{ p.game }}</td>
+        <td>{{ p.stat_line }}</td>
+        <td>{{ p.elo_rating|floatformat:0 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No performances logged yet. Add some in the <a href="/admin/">admin</a>.</p>
+{% endif %}
+{% endblock %}
