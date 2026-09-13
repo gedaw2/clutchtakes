@@ -5,7 +5,7 @@
 {% if games %}
 {% for g in games %}
 <div style="margin-bottom: 20px;">
-    <strong>{{ g }}</strong> <span style="color:#666;">({{ g.get_sport_display }})</span>
+    <strong><a href="{% url 'game_detail' g.id %}">{{ g }}</a></strong> <span style="color:#666;">({{ g.get_sport_display }})</span>
     <ul>
         {% for p in g.performances.all %}
         <li>{{ p.athlete }} — {{ p.stat_line }}</li>

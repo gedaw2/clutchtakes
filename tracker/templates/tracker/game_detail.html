@@ -1,0 +1,25 @@
+{% extends "tracker/base.html" %}
+{% block title %}{{ game }} - clutchtakes{% endblock %}
+{% block content %}
+<h1>{{ game }}</h1>
+<p style="color:#666;">{{ game.get_sport_display }}{% if game.home_score is not None %} · {{ game.away_team }} {{ game.away_score }} - {{ game.home_score }} {{ game.home_team }}{% endif %}</p>
+{% if game.notes %}<p>{{ game.notes }}</p>{% endif %}
+
+<h3>Performances</h3>
+{% if game.performances.all %}
+<ul>
+    {% for p in game.performances.all %}
+    <li>{{ p.athlete }} — {{ p.stat_line }} <span style="color:#666;">({{ p.elo_rating|floatformat:0 }})</span></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty">No performances logged for this game yet.</p>
+{% endif %}
+
+<h3>Add a performance</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="card" style="display:inline-block;">Add performance</button>
+</form>
+{% endblock %}

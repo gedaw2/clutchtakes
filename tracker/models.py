@@ -16,6 +16,10 @@ class Game(models.Model):
     home_score = models.PositiveSmallIntegerField(null=True, blank=True)
     away_score = models.PositiveSmallIntegerField(null=True, blank=True)
     notes = models.TextField(blank=True)
+    external_id = models.CharField(
+        max_length=50, null=True, blank=True, unique=True,
+        help_text="CFBD game id, for games imported via the API",
+    )
 
     class Meta:
         ordering = ["-date"]

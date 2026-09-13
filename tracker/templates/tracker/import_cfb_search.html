@@ -1,0 +1,47 @@
+{% extends "tracker/base.html" %}
+{% block title %}Import CFB game - clutchtakes{% endblock %}
+{% block content %}
+<h1>Import a college football game</h1>
+<p style="color:#666;">Pulls real game data from CollegeFootballData.com.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Year <input type="number" name="year" value="2024" required></label>
+    <label>Team <input type="text" name="team" placeholder="e.g. Georgia" required></label>
+    <button type="submit" class="card" style="display:inline-block;">Search</button>
+</form>
+
+{% if error %}<p style="color:#b00;">{{ error }}</p>{% endif %}
+
+{% if games is not None %}
+<h3>Results</h3>
+{% if games %}
+<table>
+    <tr><th>Date</th><th>Matchup</th><th>Score</th><th></th></tr>
+    {% for g in games %}
+    <tr>
+        <td>{{ g.startDate|slice:":10" }}</td>
+        <td>{{ g.awayTeam }} @ {{ g.homeTeam }}</td>
+        <td>{{ g.awayPoints }} - {{ g.homePoints }}</td>
+        <td>
+            <form method="post" action="{% url 'import_cfb_select' %}">
+                {% csrf_token %}
+                <input type="hidden" name="cfbd_id" value="{{ g.id }}">
+                <input type="hidden" name="year" value="{{ g.season }}">
+                <input type="hidden" name="week" value="{{ g.week }}">
+                <input type="hidden" name="start_date" value="{{ g.startDate }}">
+                <input type="hidden" name="home_team" value="{{ g.homeTeam }}">
+                <input type="hidden" name="away_team" value="{{ g.awayTeam }}">
+                <input type="hidden" name="home_points" value="{{ g.homePoints|default_if_none:'' }}">
+                <input type="hidden" name="away_points" value="{{ g.awayPoints|default_if_none:'' }}">
+                <button type="submit">Import</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No games found.</p>
+{% endif %}
+{% endif %}
+{% endblock %}

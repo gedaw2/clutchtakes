@@ -1,0 +1,10 @@
+{% extends "tracker/base.html" %}
+{% block title %}Add game - clutchtakes{% endblock %}
+{% block content %}
+<h1>Add a game</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="card" style="display:inline-block;">Save game</button>
+</form>
+{% endblock %}

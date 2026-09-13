@@ -1,0 +1,27 @@
+{% extends "tracker/base.html" %}
+{% block title %}{{ game }} - clutchtakes{% endblock %}
+{% block content %}
+<h1>{{ game }}</h1>
+<p style="color:#666;">Game saved. Pick which performances to add — each becomes its own rankable Performance.</p>
+
+{% if error %}<p style="color:#b00;">{{ error }}</p>{% endif %}
+
+{% for a in athletes %}
+<div style="border:1px solid #ddd; border-radius:8px; padding:12px; margin-bottom:12px;">
+    <strong>{{ a.name }}</strong> <span style="color:#666;">({{ a.team }})</span>
+    <p style="font-size:0.9rem;">{{ a.stat_line }}</p>
+    <form method="post" action="{% url 'game_detail' game.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="athlete_name" value="{{ a.name }}">
+        <input type="hidden" name="athlete_team" value="{{ a.team }}">
+        <input type="hidden" name="stat_line" value="{{ a.stat_line }}">
+        <input type="hidden" name="notes" value="">
+        <button type="submit">Add as performance</button>
+    </form>
+</div>
+{% empty %}
+<p class="empty">No player stats came back for this game.</p>
+{% endfor %}
+
+<p><a href="{% url 'game_detail' game.id %}">Go to game page</a></p>
+{% endblock %}

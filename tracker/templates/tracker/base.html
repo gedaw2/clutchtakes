@@ -23,6 +23,8 @@
     <nav>
         <a href="{% url 'ranked_list' %}">Rankings</a>
         <a href="{% url 'game_list' %}">Games</a>
+        <a href="{% url 'add_game' %}">Add game</a>
+        <a href="{% url 'import_cfb_search' %}">Import CFB game</a>
         <a href="{% url 'compare' %}">Compare</a>
     </nav>
     {% block content %}{% endblock %}
