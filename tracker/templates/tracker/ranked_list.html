@@ -2,10 +2,12 @@
 {% block title %}Rankings - clutchtakes{% endblock %}
 {% block content %}
 <h1>Performance rankings</h1>
-{% if performances %}
+{% for group in sport_groups %}
+<h2>{{ group.label }}</h2>
+{% if group.performances %}
 <table>
     <tr><th>#</th><th>Athlete</th><th>Game</th><th>Stat line</th><th>Rating</th></tr>
-    {% for p in performances %}
+    {% for p in group.performances %}
     <tr>
         <td>{{ forloop.counter }}</td>
         <td>{{ p.athlete }}</td>
@@ -16,6 +18,7 @@
     {% endfor %}
 </table>
 {% else %}
-<p class="empty">No performances logged yet. Add some in the <a href="/admin/">admin</a>.</p>
+<p class="empty">No {{ group.label }} performances logged yet.</p>
 {% endif %}
+{% endfor %}
 {% endblock %}

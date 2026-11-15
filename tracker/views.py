@@ -9,8 +9,15 @@ from .models import Athlete, Comparison, Game, Performance, Sport
 
 
 def ranked_list(request):
-    performances = Performance.objects.select_related("athlete", "game").all()
-    return render(request, "tracker/ranked_list.html", {"performances": performances})
+    sport_groups = [
+        {
+            "value": value,
+            "label": label,
+            "performances": Performance.objects.select_related("athlete", "game").filter(game__sport=value),
+        }
+        for value, label in Sport.choices
+    ]
+    return render(request, "tracker/ranked_list.html", {"sport_groups": sport_groups})
 
 
 def game_list(request):
@@ -99,8 +106,8 @@ def import_cfb_select(request):
     return render(request, "tracker/import_cfb_select.html", {"game": game, "athletes": athletes, "error": error})
 
 
-def _random_pair():
-    ids = list(Performance.objects.values_list("id", flat=True))
+def _random_pair(sport):
+    ids = list(Performance.objects.filter(game__sport=sport).values_list("id", flat=True))
     if len(ids) < 2:
         return None
     a_id, b_id = random.sample(ids, 2)
@@ -110,24 +117,28 @@ def _random_pair():
     )
 
 
-def compare(request):
-    pair = _random_pair()
-    context = {"pair": pair}
-    if pair is None:
-        return render(request, "tracker/compare.html", context)
-    left, right = pair
-    context["left"] = left
-    context["right"] = right
+def compare_choose(request):
+    return render(request, "tracker/compare_choose.html", {"sports": Sport.choices})
+
+
+def compare(request, sport):
+    if sport not in Sport.values:
+        return redirect("compare_choose")
+    pair = _random_pair(sport)
+    context = {"pair": pair, "sport": sport, "sport_label": Sport(sport).label}
+    if pair is not None:
+        context["left"], context["right"] = pair
     return render(request, "tracker/compare.html", context)
 
 
 def compare_pick(request):
     winner = get_object_or_404(Performance, id=request.POST.get("winner_id"))
     loser = get_object_or_404(Performance, id=request.POST.get("loser_id"))
+    sport = request.POST.get("sport")
     Comparison.objects.create(winner=winner, loser=loser)
 
-    pair = _random_pair()
-    context = {"pair": pair}
+    pair = _random_pair(sport)
+    context = {"pair": pair, "sport": sport, "sport_label": Sport(sport).label}
     if pair is not None:
         context["left"], context["right"] = pair
     return render(request, "tracker/_compare_pair.html", context)

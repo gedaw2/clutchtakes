@@ -7,7 +7,7 @@
             hx-target="#compare-container"
             hx-swap="outerHTML"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-            hx-vals='{"winner_id": "{{ left.id }}", "loser_id": "{{ right.id }}"}'>
+            hx-vals='{"winner_id": "{{ left.id }}", "loser_id": "{{ right.id }}", "sport": "{{ sport }}"}'>
         <h3>{{ left.athlete }}</h3>
         <div class="meta">{{ left.game }}</div>
         {{ left.stat_line }}
@@ -17,13 +17,13 @@
             hx-target="#compare-container"
             hx-swap="outerHTML"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-            hx-vals='{"winner_id": "{{ right.id }}", "loser_id": "{{ left.id }}"}'>
+            hx-vals='{"winner_id": "{{ right.id }}", "loser_id": "{{ left.id }}", "sport": "{{ sport }}"}'>
         <h3>{{ right.athlete }}</h3>
         <div class="meta">{{ right.game }}</div>
         {{ right.stat_line }}
     </button>
 </div>
 {% else %}
-<p class="empty">Need at least 2 performances logged to compare. Add some in the <a href="/admin/">admin</a>.</p>
+<p class="empty">Need at least 2 {{ sport_label }} performances logged to compare. Add some in the <a href="/admin/">admin</a>.</p>
 {% endif %}
 </div>

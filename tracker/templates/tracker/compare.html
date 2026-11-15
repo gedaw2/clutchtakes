@@ -1,6 +1,7 @@
 {% extends "tracker/base.html" %}
-{% block title %}Compare - clutchtakes{% endblock %}
+{% block title %}Compare {{ sport_label }} - clutchtakes{% endblock %}
 {% block content %}
-<h1>Compare performances</h1>
+<h1>Compare {{ sport_label }} performances</h1>
+<p><a href="{% url 'compare_choose' %}">Switch league</a></p>
 {% include "tracker/_compare_pair.html" %}
 {% endblock %}

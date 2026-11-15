@@ -9,6 +9,7 @@ urlpatterns = [
     path('games/import/', views.import_cfb_search, name='import_cfb_search'),
     path('games/import/select/', views.import_cfb_select, name='import_cfb_select'),
     path('games/<int:game_id>/', views.game_detail, name='game_detail'),
-    path('compare/', views.compare, name='compare'),
+    path('compare/', views.compare_choose, name='compare_choose'),
     path('compare/pick/', views.compare_pick, name='compare_pick'),
+    path('compare/<str:sport>/', views.compare, name='compare'),
 ]

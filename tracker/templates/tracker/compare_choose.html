@@ -1,0 +1,12 @@
+{% extends "tracker/base.html" %}
+{% block title %}Compare - clutchtakes{% endblock %}
+{% block content %}
+<h1>Which league?</h1>
+<div class="pair">
+    {% for value, label in sports %}
+    <a class="card" style="text-align:center;" href="{% url 'compare' value %}">
+        <h3>{{ label }}</h3>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
